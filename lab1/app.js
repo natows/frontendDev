@@ -1,4 +1,3 @@
-//lista 20 pokemonow
 async function getPokemonList(limit) {
     const url = `https://pokeapi.co/api/v2/pokemon?limit=${limit}`;
 
@@ -8,48 +7,22 @@ async function getPokemonList(limit) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = await response.json();
+
         return data.results; 
     } catch (error) {
-        console.error("Error fetching list", error);
-        throw new Error("Failed to fetch Pokemon list")
+        console.error(error);
+        throw new error("Error fetching pokemon list", error);
     }
 }
 
-async function display20Pokemons() {
-    const listHolder = document.getElementById('pokemonList');
-    listHolder.innerHTML = '';
-    const loadingMessage = document.createElement('div');
-    loadingMessage.textContent = 'Loading data...';
-    listHolder.appendChild(loadingMessage);
-    try {
-        const list = await getPokemonList(20);
-
-        listHolder.innerHTML = '';
-
-        list.forEach(pokemon => {
-            const listItem = document.createElement('div')
-            listItem.textContent = pokemon.name.toUpperCase(); 
-            listItem.classList.add('pokemon-item');  
-            
-            listItem.addEventListener('click', () => displayPokemonInfo(pokemon.name));
-
-            listHolder.appendChild(listItem);
-        })
-    } catch (error) {
-        console.error("Error displaying pokemon list")
-        listHolder.textContent = `Failed loading pokemon list: ${error}`
-    }
-    
-    
-}
 
 document.addEventListener('DOMContentLoaded', display20Pokemons());
 
-//szczegolowe informacje o pokemonie
+
 async function getPokemonInfo(pokemon){
     const url = `https://pokeapi.co/api/v2/pokemon/${pokemon}`;
     try {
-        const response = await fetch(url);
+        const response = await fetch(url)
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -65,94 +38,114 @@ async function getPokemonInfo(pokemon){
         }; 
         return details
     } catch (error){
-        console.log("Error fetching pokemon info")
-        throw new Error("Failed to fetch Pokemon info")
-
+        console.log(error)
+        throw new error("Error fetching pokemon info", error)
     }
 }
 
-async function displayPokemonInfo(pokemon){
-    const infoHolder = document.getElementById("pokemonInfo");
-    infoHolder.innerHTML = '';
-
+async function display20Pokemons() {
+    const listHolder = document.getElementById('pokemonList')
+    listHolder.innerHTML = '';
     const loadingMessage = document.createElement('div');
     loadingMessage.textContent = 'Loading data...';
-    infoHolder.appendChild(loadingMessage);
-
+    listHolder.appendChild(loadingMessage);
     try {
-        const info = await getPokemonInfo(pokemon)
-
-        infoHolder.innerHTML = '';
-
-
-        const name = document.createElement('h2');
-        name.textContent = `${info.name.toUpperCase()}`;
-
-        const number = document.createElement('p');
-        number.textContent = `Number: ${info.number}`;
-
-        const picture = document.createElement('img');
-        picture.src = info.picture
-        picture.style.width = '250px'
-        picture.style.height = '250px'
-
-        picture.addEventListener('click', () => {
-            displayPokemonDetails(pokemon)
-        })
+        const list = await getPokemonList(20);
+        listHolder.innerHTML = '';
 
 
-        infoHolder.appendChild(name);
-        infoHolder.appendChild(picture);
-        infoHolder.appendChild(number);
+        for (const pokemon of list) {
+            const listItem = document.createElement('div') 
+            listItem.classList.add('pokemon-item'); 
 
+            const name = document.createElement('div');
+            name.textContent = pokemon.name.toUpperCase();
+
+            try { 
+                const info = await getPokemonInfo(pokemon.name);
+
+                const number = document.createElement('div');
+                number.textContent = `No ${info.number}`; 
+
+                const picture = document.createElement('img')
+                picture.src = info.picture
+
+
+                listItem.appendChild(picture)
+                listItem.appendChild(name)
+                listItem.appendChild(number)
+
+            }catch (error) {
+                console.error(error)
+                throw new error("Error fetching pokemon info for displaying", error)
+            }
+            
+            
+            listItem.addEventListener('click', () => displayPokemonDetails(pokemon.name));
+
+            listHolder.appendChild(listItem);
+
+        }
     } catch (error) {
-        console.log("Error displaying pokemon info");
-        infoHolder.textContent = `Error displaying pokemon info: ${error}`;
+        console.error("Error displaying pokemon list", error)
+        listHolder.textContent = `Failed loading pokemon list: ${error}`
     }
+    
+    
 }
+
+
 
 
 async function displayPokemonDetails(pokemon) {
     const detailHolder = document.getElementById('pokemonDetails');
+    detailHolder.classList.add('detailHolder')
     detailHolder.innerHTML = '';
-    
     const loadingMessage = document.createElement('div');
     loadingMessage.textContent = 'Loading data...';
     detailHolder.appendChild(loadingMessage);
 
     try {
-        const details = await getPokemonInfo(pokemon);
-
+        const details = await getPokemonInfo(pokemon)
         detailHolder.innerHTML = '';
 
-        const stats = document.createElement('p');
-        stats.textContent = `Stats: ${details.stats}`;
+        const name = document.createElement('h2')
+        name.textContent = `${details.name.toUpperCase()}`
 
-        const types = document.createElement('p');
-        types.textContent = `Types: ${details.types}`;
+        const picture = document.createElement('img')
+        picture.src = details.picture
+        picture.style.width = '250px'
+        picture.style.height = '250px'
 
-        const height = document.createElement('p');
-        height.textContent = `Height: ${details.height}`;
+        const stats = document.createElement('p')
+        stats.textContent = `Stats: ${details.stats}`
 
-        const weight = document.createElement('p');
-        weight.textContent = `Weight: ${details.weight}`;
+        const types = document.createElement('p')
+        types.textContent = `Types: ${details.types}`
 
-        detailHolder.appendChild(stats);
-        detailHolder.appendChild(types);
-        detailHolder.appendChild(height);
-        detailHolder.appendChild(weight);
+        const height = document.createElement('p')
+        height.textContent = `Height: ${details.height}`
+
+        const weight = document.createElement('p')
+        weight.textContent = `Weight: ${details.weight}`
+
+        detailHolder.appendChild(name)
+        detailHolder.appendChild(picture)
+        detailHolder.appendChild(stats)
+        detailHolder.appendChild(types)
+        detailHolder.appendChild(height)
+        detailHolder.appendChild(weight)
 
 
     }catch (error) {
-        console.log("Error fetching pokemon details");
-        detailHolder.textContent = `Error displaying pokemon details: ${error}`;
+        console.log("Error fetching pokemon details")
+        detailHolder.textContent = `Error fetching pokemon details: ${error}`
     }
 
     
 }
 
 
-//wyszukiwanie pokemona przez input
 document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('pokemonSearch');
     const searchButton = document.getElementById('imageButton');
@@ -160,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
     searchButton.addEventListener('click', () => {
         const pokemonName = searchInput.value.toLowerCase().trim();
         if (pokemonName) {
-            displayPokemonInfo(pokemonName);
+            displayPokemonDetails(pokemonName);
         } else {
             alert('Please input pokemon name');
         }
