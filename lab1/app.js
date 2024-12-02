@@ -1,3 +1,4 @@
+//lista 20 pokemonow
 async function getPokemonList(limit) {
     const url = `https://pokeapi.co/api/v2/pokemon?limit=${limit}`;
 
@@ -18,7 +19,7 @@ async function display20Pokemons() {
     const listHolder = document.getElementById('pokemonList');
     listHolder.innerHTML = '';
     const loadingMessage = document.createElement('div');
-    loadingMessage.textContent = 'Ładowanie danych...';
+    loadingMessage.textContent = 'Loading data...';
     listHolder.appendChild(loadingMessage);
     try {
         const list = await getPokemonList(20);
@@ -44,7 +45,7 @@ async function display20Pokemons() {
 
 document.addEventListener('DOMContentLoaded', display20Pokemons());
 
-
+//szczegolowe informacje o pokemonie
 async function getPokemonInfo(pokemon){
     const url = `https://pokeapi.co/api/v2/pokemon/${pokemon}`;
     try {
@@ -75,7 +76,7 @@ async function displayPokemonInfo(pokemon){
     infoHolder.innerHTML = '';
 
     const loadingMessage = document.createElement('div');
-    loadingMessage.textContent = 'Ładowanie danych...';
+    loadingMessage.textContent = 'Loading data...';
     infoHolder.appendChild(loadingMessage);
 
     try {
@@ -116,7 +117,7 @@ async function displayPokemonDetails(pokemon) {
     detailHolder.innerHTML = '';
     
     const loadingMessage = document.createElement('div');
-    loadingMessage.textContent = 'Ładowanie danych...';
+    loadingMessage.textContent = 'Loading data...';
     detailHolder.appendChild(loadingMessage);
 
     try {
@@ -150,3 +151,18 @@ async function displayPokemonDetails(pokemon) {
     
 }
 
+
+//wyszukiwanie pokemona przez input
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('pokemonSearch');
+    const searchButton = document.getElementById('imageButton');
+
+    searchButton.addEventListener('click', () => {
+        const pokemonName = searchInput.value.toLowerCase().trim();
+        if (pokemonName) {
+            displayPokemonInfo(pokemonName);
+        } else {
+            alert('Please input pokemon name');
+        }
+    });
+});
