@@ -1,3 +1,4 @@
+//alerty usun i eventlistenery n onclicki
 async function getPokemonList(limit) {
     const url = `https://pokeapi.co/api/v2/pokemon?limit=${limit}`;
 
@@ -14,9 +15,6 @@ async function getPokemonList(limit) {
         throw new error("Error fetching pokemon list", error);
     }
 }
-
-
-document.addEventListener('DOMContentLoaded', display20Pokemons());
 
 
 async function getPokemonInfo(pokemon){
@@ -94,7 +92,7 @@ async function display20Pokemons() {
     
 }
 
-
+document.addEventListener('DOMContentLoaded', display20Pokemons());
 
 
 async function displayPokemonDetails(pokemon) {

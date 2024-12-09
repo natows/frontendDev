@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemon Finder</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="center">
+        <h1>Pokemon Finder</h1>
+        <div class="ball"></div>
+    </div>
+    <div class="bottom">
+        <div class="list">
+            <h3 class="header">Pokemon list</h3>
+            <div id="loadingerror"></div>
+            <div id="root"></div> 
+        </div>
+        <div class="details">
+            <h3 class="header">Pokemon details</h3>
+            <div id="pokemonDetails"></div>
+        </div>
+    </div>
+    <script src="./components/PokemonList.js"></script>
+    <script src="./components/PokemonDetails.js"></script>    
+    <script src="App.js"></script>
+</body>
+</html>
+
