@@ -39,13 +39,19 @@ const App = () => {
             pokemonDetails = {};
 
             for (let pokemon of pokemonList) {
-                const details = await getPokemonInfo(pokemon.name);
-                pokemonDetails[pokemon.name] = details;
+                try{
+                    const details = await getPokemonInfo(pokemon.name);
+                    pokemonDetails[pokemon.name] = details;
+                }catch (err) {
+                    error = "Failed to load Pokemon details";
+                    console.log(err)
+                }
 
                 
             }
         } catch (err) {
             error = "Failed to load Pokemon list";
+            console.log(err)
         } finally {
             document.body.removeChild(loadingDiv); 
             render();
