@@ -4,7 +4,7 @@ body {
 }
 
 .center {
-  height: 150px;
+  height: 140px;
   font-size: 25px;
   font-family: cursive;
   display: flex;
@@ -18,7 +18,7 @@ body {
 }
 .center .ball {
   position: absolute;
-  top: 105px;
+  top: 90px;
   background-color: white;
   border: black solid 10px;
   height: 80px;
